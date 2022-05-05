@@ -1,0 +1,36 @@
+@import url(//db.onlinewebfonts.com/c/05428692254b58ccb090358a3dfecfff?family=Sofia+Pro);
+@font-face {font-family: "Sofia Pro"; src: url("//db.onlinewebfonts.com/t/05428692254b58ccb090358a3dfecfff.eot"); src: url("//db.onlinewebfonts.com/t/05428692254b58ccb090358a3dfecfff.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/05428692254b58ccb090358a3dfecfff.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/05428692254b58ccb090358a3dfecfff.woff") format("woff"), url("//db.onlinewebfonts.com/t/05428692254b58ccb090358a3dfecfff.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/05428692254b58ccb090358a3dfecfff.svg#Sofia Pro") format("svg"); }
+
+* {
+    color: #ffffff;
+    font-family: "Sofia Pro";
+}
+
+body {
+    background-color: #121213;
+}
+
+.title-container{
+    text-align: center;
+    width:510px;
+    border-bottom: solid 1px #3a3a3c ;
+}
+
+.tile-container {
+    width: 330px;
+    margin-bottom: 30px;
+}
+
+.key-container{
+    width: 510px;
+    display:flex;
+    flex-wrap:wrap;
+}
+
+.game-container {
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
