@@ -1,5 +1,6 @@
 const tileDisplay = document.querySelector('.tile-container')
 const keyboard = document.querySelector('.key-container')
+const messageDisplay = document.querySelector('.message-container')
 
 const wordle = 'SUPER'
 
@@ -45,6 +46,7 @@ const guessRows = [
 
 let currentRow = 0
 let currentTile = 0
+let isGameOver = false
 
 guessRows.forEach((guessRow,guessRowIndex) => {
     const rowElement = document.createElement('div')
@@ -70,11 +72,11 @@ keys.forEach(key => {
 const handleClick = (key) => {
     console.log('clicked', key)
     if(key === '«'){
-        console.log('Delete letter')
+        deleteLetter()
         return
     }
     if(key === 'ENTER'){
-        console.log('check row')
+        checkRow()
         return
     }
     addLetter(key)
@@ -97,3 +99,41 @@ const addLetter = (letter) => {
    
 }
 
+const deleteLetter = () => {
+    if(currentTile > 0){
+        currentTile--
+        const tile = document.getElementById(`guessRow-${currentRow}-tile-${currentTile}`)
+        tile.textContent = ''
+        guessRows[currentRow][currentTile] = ''
+        tile.setAttribute('data','')
+    }
+}
+
+const checkRow = () => {
+    const guess = guessRows[currentRow].join('')
+    if(currentTile > 4){
+        console.log(`guess is: ${guess} word is: ${wordle}`)
+        if(wordle == guess){
+            showMessage('Magnificent!')
+            isGameOver = true
+            return
+        } else {
+            if(currentRow >= 5){
+                isGameOver = false // is this meant to be true?
+                showMessage('Game over')
+                return
+            }
+            if(currentRow < 5){
+                currentRow++
+                currentTile = 0
+            }
+        }
+    }
+}
+
+const showMessage = (message) => {
+    const messageElement = document.createElement('p')
+    messageElement.textContent = message
+    messageDisplay.append(messageElement)
+    setTimeout(() => messageDisplay.removeChild(messageElement), 2000)
+}
