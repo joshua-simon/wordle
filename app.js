@@ -2,7 +2,21 @@ const tileDisplay = document.querySelector('.tile-container')
 const keyboard = document.querySelector('.key-container')
 const messageDisplay = document.querySelector('.message-container')
 
-const wordle = 'SUPER'
+
+let wordle
+
+const getWordle = () => {
+    fetch('http://localhost:8000/word')
+    .then(result => result.json())
+    .then(word => {
+        console.log(word)
+        wordle = word.toUpperCase()
+    }).catch(err => {
+        console.log(err)
+    })
+}
+
+getWordle()
 
 const keys = [
     'Q',
@@ -70,17 +84,19 @@ keys.forEach(key => {
 })
 
 const handleClick = (key) => {
-    console.log('clicked', key)
-    if(key === '«'){
-        deleteLetter()
-        return
+  if (!isGameOver) {
+    console.log("clicked", key);
+    if (key === "«") {
+      deleteLetter();
+      return;
     }
-    if(key === 'ENTER'){
-        checkRow()
-        return
+    if (key === "ENTER") {
+      checkRow();
+      return;
     }
-    addLetter(key)
-}
+    addLetter(key);
+  }
+};
 
 //want to make sure that when you click on letter it is addded to correct tile
 
@@ -110,27 +126,38 @@ const deleteLetter = () => {
 }
 
 const checkRow = () => {
-    const guess = guessRows[currentRow].join('')
-    if(currentTile > 4){
-        console.log(`guess is: ${guess} word is: ${wordle}`)
-        flipTile()
-        if(wordle == guess){
-            showMessage('Magnificent!')
-            isGameOver = true
-            return
+  const guess = guessRows[currentRow].join("");
+  if (currentTile > 4) {
+    fetch(`http://localhost:8000/check/?word=${guess}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data == "Entry word not found") {
+          showMessage("word not in list");
+          return;
         } else {
-            if(currentRow >= 5){
-                isGameOver = false // is this meant to be true?
-                showMessage('Game over')
-                return
+          flipTile();
+          if (wordle == guess) {
+            showMessage("Magnificent!");
+            isGameOver = true;
+            return;
+          } else {
+            if (currentRow >= 5) {
+              isGameOver = true
+              showMessage("Game over");
+              return;
             }
-            if(currentRow < 5){
-                currentRow++
-                currentTile = 0
+            if (currentRow < 5) {
+              currentRow++;
+              currentTile = 0;
             }
+          }
         }
-    }
-}
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+};
 
 const showMessage = (message) => {
     const messageElement = document.createElement('p')
